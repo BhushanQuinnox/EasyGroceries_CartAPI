@@ -38,11 +38,6 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
             }
         }
 
-        public Task AddCartDetailsList(List<CartDetails> cartDetails)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task Delete(CartDetails cartDetails)
         {
             throw new NotImplementedException();
@@ -59,15 +54,6 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
             }
         }
 
-        public Task<CartDetails> GetCartDetailsByCartDetailsId(int cartDetailsId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CartDetails> GetCartDetailsByHeaderId(int headerId)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task Update(CartDetails cartDetails)
         {

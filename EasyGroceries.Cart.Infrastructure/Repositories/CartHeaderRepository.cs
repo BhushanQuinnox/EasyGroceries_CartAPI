@@ -48,11 +48,6 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
             }
         }
 
-        public Task<IReadOnlyList<CartHeader>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<CartHeader> GetCartHeaderByUserId(int id)
         {
             var sql = "SELECT * FROM CartHeader WHERE UserId = @id";
@@ -62,11 +57,6 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
                 var result = await connection.QuerySingleOrDefaultAsync<CartHeader>(sql, new { id });
                 return result;
             }
-        }
-
-        public Task Update(CartHeader cartHeader)
-        {
-            throw new NotImplementedException();
         }
     }
 }
