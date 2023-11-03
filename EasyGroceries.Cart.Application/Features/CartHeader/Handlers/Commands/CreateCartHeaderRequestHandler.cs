@@ -42,6 +42,7 @@ namespace EasyGroceries.Cart.Application.Features.CartHeader.Handlers.Commands
 
             var cartHeader = _mapper.Map<EasyGroceries.Cart.Domain.CartHeader>(request.CartHeaderDto);
             await _cartHeaderRepository.Add(cartHeader);
+            response.Status = (int)HttpStatusCode.Created;
             response.Message = "CartHeader Creation Successful";
             response.Result = request.CartHeaderDto;
             return response;
