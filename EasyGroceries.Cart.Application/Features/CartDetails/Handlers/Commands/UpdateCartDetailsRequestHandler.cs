@@ -24,24 +24,16 @@ namespace EasyGroceries.Cart.Application.Features.CartDetails.Handlers.Commands
 
         public async Task<bool> Handle(UpdateCartDetailsRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new CartDetailsDtoValidator();
-                var validationResult = await validator.ValidateAsync(request.CartDetailsDto);
-                if (!validationResult.IsValid)
-                {
-                    return false;
-                }
-
-                var cartDetails = _mapper.Map<Domain.CartDetails>(request.CartDetailsDto);
-                await _cartDetailsRepository.Update(cartDetails);
-                return true;
-            }
-            catch
+            var validator = new CartDetailsDtoValidator();
+            var validationResult = await validator.ValidateAsync(request.CartDetailsDto);
+            if (!validationResult.IsValid)
             {
                 return false;
             }
 
+            var cartDetails = _mapper.Map<Domain.CartDetails>(request.CartDetailsDto);
+            await _cartDetailsRepository.UpdateCount(cartDetails);
+            return true;
         }
     }
 }

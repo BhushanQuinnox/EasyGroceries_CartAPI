@@ -29,7 +29,7 @@ namespace EasyGroceries.Cart.Application.Services
                 return resp.Result;
             }
 
-            return new List<ProductDto>();
+            return null;
         }
     }
 }

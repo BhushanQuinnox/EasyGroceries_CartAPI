@@ -55,14 +55,11 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
         }
 
 
-        public async Task Update(CartDetails cartDetails)
+        public async Task UpdateCount(CartDetails cartDetails)
         {
-            var sqlCommand = "Update CartDetails set CartDetailsId = @CartDetailsId, CartHeaderId = @CartHeaderId, ProductId = @ProductId, Count = @Count Where Id = @Id";
+            var sqlCommand = "Update CartDetails set Count = @Count Where CartDetailsId = @CartDetailsId";
             var parameters = new DynamicParameters();
-            parameters.Add("Id", cartDetails.CartDetailsId);
             parameters.Add("CartDetailsId", cartDetails.CartDetailsId);
-            parameters.Add("CartHeaderId", cartDetails.CartHeaderId);
-            parameters.Add("ProductId", cartDetails.ProductId);
             parameters.Add("Count", cartDetails.Count);
 
             using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
