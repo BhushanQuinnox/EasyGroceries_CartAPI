@@ -13,17 +13,19 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
 {
     public class CartDetailsRepository : ICartDetailsRepository
     {
-        private readonly IConfiguration _configuration;
+        // private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
         public CartDetailsRepository(IConfiguration configuration)
         {
-            _configuration = configuration;
+            // _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task AddCartDetails(CartDetails cartDetails)
         {
             var sqlCommand = "Insert into CartDetails (CartDetailsId, CartHeaderId, ProductId, Count) values (@CartDetailsId, @CartHeaderId, @ProductId, @Count)";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var result = await connection.ExecuteAsync(sqlCommand, new
@@ -46,7 +48,7 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
         public async Task<IReadOnlyList<CartDetails>> GetAllCartDetails()
         {
             var sqlCommand = "SELECT * FROM CartDetails";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var result = await connection.QueryAsync<CartDetails>(sqlCommand);
@@ -62,7 +64,7 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
             parameters.Add("CartDetailsId", cartDetails.CartDetailsId);
             parameters.Add("Count", cartDetails.Count);
 
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 await connection.ExecuteAsync(sqlCommand, parameters);

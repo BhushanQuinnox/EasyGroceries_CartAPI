@@ -13,16 +13,19 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
 {
     public class CartHeaderRepository : ICartHeaderRepository
     {
-        private readonly IConfiguration _configuration;
+        // private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+
         public CartHeaderRepository(IConfiguration configuration)
         {
-            _configuration = configuration;
+            // _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task Add(CartHeader cartHeader)
         {
             var sql = "Insert into CartHeader (CartHeaderId, UserId, LoyaltyMembershipOpted, CartTotal) values (@CartHeaderId, @UserId, @LoyaltyMembershipOpted, @CartTotal)";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var result = await connection.ExecuteAsync(sql, new
@@ -40,7 +43,7 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
         public async Task Delete(int cartHeaderId)
         {
             var sql = "Delete FROM CartHeader WHERE CartHeaderId = @id";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var result = await connection.ExecuteAsync(sql, new { cartHeaderId });
@@ -51,7 +54,7 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
         public async Task<CartHeader> GetCartHeaderByUserId(int id)
         {
             var sql = "SELECT * FROM CartHeader WHERE UserId = @id";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var result = await connection.QuerySingleOrDefaultAsync<CartHeader>(sql, new { id });
