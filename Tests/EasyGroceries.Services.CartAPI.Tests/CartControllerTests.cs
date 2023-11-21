@@ -27,10 +27,7 @@ public class CartControllerTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {

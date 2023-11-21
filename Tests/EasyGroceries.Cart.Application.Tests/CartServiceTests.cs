@@ -41,10 +41,7 @@ public class CartServiceTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {
@@ -89,7 +86,6 @@ public class CartServiceTests
 
         // Assert
         Assert.True(response.IsSuccess);
-        Assert.Equal(cartDto.CartHeader.Name, response.Result.CartHeader.Name);
         Assert.Equal(cartDto.CartHeader.CartTotal, response.Result.CartHeader.CartTotal);
         Assert.Equal(cartDto.CartDetails.First().Count, response.Result.CartDetails.First().Count);
     }
@@ -106,10 +102,7 @@ public class CartServiceTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {
@@ -169,10 +162,7 @@ public class CartServiceTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {
@@ -235,10 +225,7 @@ public class CartServiceTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {
@@ -353,10 +340,7 @@ public class CartServiceTests
             {
                 CartHeaderId = 100,
                 CartTotal = 10,
-                ApartmentName = "Atria Grande",
-                City = "Pune",
-                UserId = 1234,
-                Name = "B N"
+                UserId = 1234
             },
             CartDetails = new List<CartDetailsDto>()
             {
