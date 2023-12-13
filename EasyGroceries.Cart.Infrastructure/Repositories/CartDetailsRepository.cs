@@ -8,36 +8,24 @@ using Dapper;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasyGroceries.Cart.Infrastructure.Contracts;
+using System.Data;
 
 namespace EasyGroceries.Cart.Infrastructure.Repositories
 {
     public class CartDetailsRepository : ICartDetailsRepository
     {
-        // private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly IDapper _dapper;
 
-        public CartDetailsRepository(IConfiguration configuration)
+        public CartDetailsRepository(IDapper dapper)
         {
-            // _configuration = configuration;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _dapper = dapper;
         }
 
         public async Task AddCartDetails(CartDetails cartDetails)
         {
-            var sqlCommand = "Insert into CartDetails (CartDetailsId, CartHeaderId, ProductId, Count) values (@CartDetailsId, @CartHeaderId, @ProductId, @Count)";
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var result = await connection.ExecuteAsync(sqlCommand, new
-                {
-                    CartDetailsId = cartDetails.CartDetailsId,
-                    CartHeaderId = cartDetails.CartHeaderId,
-                    ProductId = cartDetails.ProductId,
-                    Count = cartDetails.Count,
-                });
-
-                connection.Close();
-            }
+            var query = "Insert into CartDetails (CartDetailsId, CartHeaderId, ProductId, Count) values (@CartDetailsId, @CartHeaderId, @ProductId, @Count)";
+            await Task.FromResult(_dapper.Insert<CartDetails>(query, cartDetails, commandType: CommandType.Text));
         }
 
         public Task Delete(CartDetails cartDetails)
@@ -47,29 +35,19 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<CartDetails>> GetAllCartDetails()
         {
-            var sqlCommand = "SELECT * FROM CartDetails";
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var result = await connection.QueryAsync<CartDetails>(sqlCommand);
-                return result.ToList();
-            }
+            var query = "SELECT * FROM CartDetails";
+            var CartDetailsList = await Task.FromResult(_dapper.GetAll<CartDetails>(query, null, commandType: CommandType.Text));
+            return CartDetailsList;
         }
 
 
         public async Task UpdateCount(CartDetails cartDetails)
         {
-            var sqlCommand = "Update CartDetails set Count = @Count Where CartDetailsId = @CartDetailsId";
+            var query = "Update CartDetails set Count = @Count Where CartDetailsId = @CartDetailsId";
             var parameters = new DynamicParameters();
             parameters.Add("CartDetailsId", cartDetails.CartDetailsId);
             parameters.Add("Count", cartDetails.Count);
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                await connection.ExecuteAsync(sqlCommand, parameters);
-                connection.Close();
-            }
+            await Task.FromResult(_dapper.Update<CartDetails>(query, parameters, commandType: CommandType.Text));
         }
     }
 }

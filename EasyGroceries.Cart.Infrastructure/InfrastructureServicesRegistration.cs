@@ -1,4 +1,6 @@
 ﻿using EasyGroceries.Cart.Application.Contracts.Infrastructure;
+using EasyGroceries.Cart.Infrastructure.Contracts;
+using EasyGroceries.Cart.Infrastructure.DBHandler;
 using EasyGroceries.Cart.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +17,7 @@ namespace EasyGroceries.Cart.Infrastructure
         {
             services.AddScoped<ICartHeaderRepository, CartHeaderRepository>();
             services.AddScoped<ICartDetailsRepository, CartDetailsRepository>();
+            services.AddScoped<IDapper, DatabaseHandler>();
             return services;
         }
     }

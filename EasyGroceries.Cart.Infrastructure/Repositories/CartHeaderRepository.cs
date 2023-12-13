@@ -8,58 +8,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using EasyGroceries.Cart.Infrastructure.Contracts;
+using System.Data;
 
 namespace EasyGroceries.Cart.Infrastructure.Repositories
 {
     public class CartHeaderRepository : ICartHeaderRepository
     {
-        // private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly IDapper _dapper;
 
-        public CartHeaderRepository(IConfiguration configuration)
+        public CartHeaderRepository(IDapper dapper)
         {
-            // _configuration = configuration;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _dapper = dapper;
         }
 
         public async Task Add(CartHeader cartHeader)
         {
-            var sql = "Insert into CartHeader (CartHeaderId, UserId, LoyaltyMembershipOpted, CartTotal) values (@CartHeaderId, @UserId, @LoyaltyMembershipOpted, @CartTotal)";
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var result = await connection.ExecuteAsync(sql, new
-                {
-                    CartHeaderId = cartHeader.CartHeaderId,
-                    UserId = cartHeader.UserId,
-                    LoyaltyMembershipOpted = cartHeader.LoyaltyMembershipOpted,
-                    CartTotal = cartHeader.CartTotal,
-                });
-
-                connection.Close();
-            }
+            var query = "Insert into CartHeader (CartHeaderId, UserId, LoyaltyMembershipOpted, CartTotal) values (@CartHeaderId, @UserId, @LoyaltyMembershipOpted, @CartTotal)";
+            await Task.FromResult(_dapper.Insert<CartHeader>(query, cartHeader, commandType: CommandType.Text));
         }
 
         public async Task Delete(int cartHeaderId)
         {
-            var sql = "Delete FROM CartHeader WHERE CartHeaderId = @id";
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var result = await connection.ExecuteAsync(sql, new { cartHeaderId });
-                connection.Close();
-            }
+            var query = "Delete FROM CartHeader WHERE CartHeaderId = @id";
+            var parameters = new DynamicParameters();
+            parameters.Add("@id", cartHeaderId, DbType.Int32, ParameterDirection.Input);
+            await Task.FromResult(_dapper.Execute<CartHeader>(query, parameters, CommandType.Text));
         }
 
         public async Task<CartHeader> GetCartHeaderByUserId(int id)
         {
-            var sql = "SELECT * FROM CartHeader WHERE UserId = @id";
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var result = await connection.QuerySingleOrDefaultAsync<CartHeader>(sql, new { id });
-                return result;
-            }
+            var query = "SELECT * FROM CartHeader WHERE UserId = @id";
+            var parameters = new DynamicParameters();
+            parameters.Add("@id", id, DbType.Int32, ParameterDirection.Input);
+            var cartHeader = await Task.FromResult(_dapper.Get<CartHeader>(query, parameters, CommandType.Text));
+            return cartHeader;
         }
     }
 }
