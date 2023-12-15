@@ -12,6 +12,5 @@ namespace EasyGroceries.Cart.Application.Contracts.Infrastructure
         Task AddCartDetails(CartDetails cartDetails);
         Task<IReadOnlyList<CartDetails>> GetAllCartDetails();
         Task UpdateCount(CartDetails cartDetails);
-        Task Delete(CartDetails cartDetails);
     }
 }

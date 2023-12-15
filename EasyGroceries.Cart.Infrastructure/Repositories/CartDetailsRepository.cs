@@ -28,11 +28,6 @@ namespace EasyGroceries.Cart.Infrastructure.Repositories
             await Task.FromResult(_dapper.Insert<CartDetails>(query, cartDetails, commandType: CommandType.Text));
         }
 
-        public Task Delete(CartDetails cartDetails)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IReadOnlyList<CartDetails>> GetAllCartDetails()
         {
             var query = "SELECT * FROM CartDetails";
